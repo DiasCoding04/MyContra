@@ -14,13 +14,8 @@ Player::Player()
       m_isJumping(false), m_velocityY(0.f), m_gravity(500.f),
       m_touchingLeft(false), m_touchingRight(false),
       m_jumpKeyReleased(true),
-      m_facingRight(true),
-      m_shootCooldown(0.2f),
-      m_currentCooldown(0.0f),
-      m_activeBullets(0)
+      m_facingRight(true)
 {
-    // Khởi tạo pool đạn
-    m_bullets.resize(MAX_BULLETS);
 }
 
 Player::~Player()
@@ -31,9 +26,7 @@ Player::~Player()
         m_texture = nullptr;
     }
 
-    // Clear bullet pool
-    m_bullets.clear();
-    m_activeBullets = 0;
+
 }
 
 void Player::init(SDL_Renderer* renderer, float startX, float startY,
@@ -58,53 +51,6 @@ void Player::init(SDL_Renderer* renderer, float startX, float startY,
 
 }
 
-void Player::shoot(SDL_Renderer* renderer)
-{
-    if (m_currentCooldown > 0) return;
-
-    // Tìm viên đạn không active trong pool
-    Bullet* bullet = nullptr;
-    for (auto& b : m_bullets) {
-        if (!b.m_active) {
-            bullet = &b;
-            break;
-        }
-    }
-
-    if (!bullet) return;
-
-    // Điều chỉnh vị trí bắt đầu của đạn theo chiều ngang
-    float bulletOffsetFromEdge = 1.0f; // Khoảng cách từ viên đạn đến edge của sprite
-
-    float bulletStartX;
-    if (m_facingRight) {
-        bulletStartX = m_x + m_width - bulletOffsetFromEdge; // Giảm khoảng cách khi bắn sang phải
-    } else {
-        bulletStartX = m_x + bulletOffsetFromEdge; // Tăng khoảng cách khi bắn sang trái
-    }
-
-    float bulletStartY = m_y + (m_height * 0.35f); // Giữ nguyên độ cao như cũ
-
-    bullet->init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
-    m_activeBullets++;
-    m_currentCooldown = m_shootCooldown;
-}
-
-void Player::updateBullets(float deltaTime, const Camera& camera)
-{
-    for (auto& bullet : m_bullets) {
-        if (!bullet.m_active) continue;
-
-        // Cập nhật vị trí đạn
-        bullet.update(deltaTime);
-
-        // Kiểm tra đạn ra khỏi màn hình
-        if (bullet.isOutOfBounds(SCREEN_WIDTH, SCREEN_HEIGHT, camera)) {
-            bullet.setActive(false);
-            m_activeBullets--;
-        }
-    }
-}
 
 bool Player::isOnGround(const Map& map) {
     float checkY = m_y + m_height + 1.0f;
@@ -257,8 +203,6 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight,
         }
     }
 
-    // Cập nhật đạn
-    updateBullets(deltaTime, camera);
 }
 
 void Player::render(SDL_Renderer* renderer, const Camera& camera)
@@ -276,15 +220,5 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera)
     SDL_RendererFlip flip = m_facingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
     SDL_RenderCopyEx(renderer, m_texture, NULL, &dst, 0, NULL, flip);
 
-    // Render đạn
-    renderBullets(renderer, camera);
 }
 
-void Player::renderBullets(SDL_Renderer* renderer, const Camera& camera)
-{
-    for (auto& bullet : m_bullets) {
-        if (bullet.m_active) {
-            bullet.render(renderer, camera);
-        }
-    }
-}

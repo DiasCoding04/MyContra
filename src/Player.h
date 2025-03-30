@@ -4,7 +4,7 @@
 #include <vector>
 #include "Map.h"
 #include "Camera.h"
-#include "Bullet.h"
+
 
 class Player {
 public:
@@ -21,11 +21,7 @@ public:
     float getX() const { return m_x; }
     float getY() const { return m_y; }
 
-    // Hệ thống bắn
-    void shoot(SDL_Renderer* renderer);
-    void updateBullets(float deltaTime, const Camera& camera);
-    void renderBullets(SDL_Renderer* renderer, const Camera& camera);
-    size_t getActiveBullets() const { return m_activeBullets; }
+
 
 private:
     bool isOnGround(const Map& map);
@@ -53,7 +49,4 @@ private:
     bool m_facingRight;
 
 
-    static const size_t MAX_BULLETS = 30; // Số lượng đạn tối đa trong pool
-    std::vector<Bullet> m_bullets;        // Pool các viên đạn
-    size_t m_activeBullets;              // Số lượng đạn đang active
 };

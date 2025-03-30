@@ -46,8 +46,6 @@ add_executable(GameSdl2 src/main.cpp
         src/GameTypes.h
         src/Background.h
         src/Background.cpp
-        src/bullet.h
-        src/bullet.cpp
         # Thêm TinyXML2
 )
 

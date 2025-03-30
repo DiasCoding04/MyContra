@@ -119,13 +119,6 @@ build CMakeFiles/GameSdl2.dir/src/Background.cpp.obj: CXX_COMPILER__GameSdl2_uns
   OBJECT_DIR = CMakeFiles\GameSdl2.dir
   OBJECT_FILE_DIR = CMakeFiles\GameSdl2.dir\src
 
-build CMakeFiles/GameSdl2.dir/src/bullet.cpp.obj: CXX_COMPILER__GameSdl2_unscanned_Debug C$:/Users/dias/Documents/GameSdl2/GameSdl2/src/bullet.cpp || cmake_object_order_depends_target_GameSdl2
-  DEP_FILE = CMakeFiles\GameSdl2.dir\src\bullet.cpp.obj.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2/include -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_image/include -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_mixer/include -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_ttf/include -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/Glew/include -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/glm -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs -IC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/tinyxml2
-  OBJECT_DIR = CMakeFiles\GameSdl2.dir
-  OBJECT_FILE_DIR = CMakeFiles\GameSdl2.dir\src
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target GameSdl2
@@ -134,7 +127,7 @@ build CMakeFiles/GameSdl2.dir/src/bullet.cpp.obj: CXX_COMPILER__GameSdl2_unscann
 #############################################
 # Link the executable GameSdl2.exe
 
-build GameSdl2.exe: CXX_EXECUTABLE_LINKER__GameSdl2_Debug CMakeFiles/GameSdl2.dir/src/main.cpp.obj CMakeFiles/GameSdl2.dir/src/Player.cpp.obj CMakeFiles/GameSdl2.dir/src/Camera.cpp.obj CMakeFiles/GameSdl2.dir/src/InputManager.cpp.obj CMakeFiles/GameSdl2.dir/src/SoundManager.cpp.obj CMakeFiles/GameSdl2.dir/src/ResourceManager.cpp.obj CMakeFiles/GameSdl2.dir/src/TextureManager.cpp.obj CMakeFiles/GameSdl2.dir/src/Map.cpp.obj CMakeFiles/GameSdl2.dir/libs/tinyxml2/tinyxml2.cpp.obj CMakeFiles/GameSdl2.dir/src/Background.cpp.obj CMakeFiles/GameSdl2.dir/src/bullet.cpp.obj
+build GameSdl2.exe: CXX_EXECUTABLE_LINKER__GameSdl2_Debug CMakeFiles/GameSdl2.dir/src/main.cpp.obj CMakeFiles/GameSdl2.dir/src/Player.cpp.obj CMakeFiles/GameSdl2.dir/src/Camera.cpp.obj CMakeFiles/GameSdl2.dir/src/InputManager.cpp.obj CMakeFiles/GameSdl2.dir/src/SoundManager.cpp.obj CMakeFiles/GameSdl2.dir/src/ResourceManager.cpp.obj CMakeFiles/GameSdl2.dir/src/TextureManager.cpp.obj CMakeFiles/GameSdl2.dir/src/Map.cpp.obj CMakeFiles/GameSdl2.dir/libs/tinyxml2/tinyxml2.cpp.obj CMakeFiles/GameSdl2.dir/src/Background.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lSDL2  -lSDL2main  -lSDL2_image  -lSDL2_mixer  -lSDL2_ttf  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2/lib   -LC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_image/lib   -LC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_mixer/lib   -LC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/SDL2_ttf/lib   -LC:/Users/dias/Documents/GameSdl2/GameSdl2/libs/Glew/lib
