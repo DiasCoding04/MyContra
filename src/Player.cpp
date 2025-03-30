@@ -71,11 +71,20 @@ void Player::shoot(SDL_Renderer* renderer)
         }
     }
 
-    if (!bullet) return; // Không còn đạn không active trong pool
+    if (!bullet) return;
 
-    // Khởi tạo đạn
-    float bulletStartX = m_facingRight ? m_x + m_width : m_x;
-    float bulletStartY = m_y + m_height / 2;
+    // Điều chỉnh vị trí bắt đầu của đạn theo chiều ngang
+    float bulletOffsetFromEdge = 1.0f; // Khoảng cách từ viên đạn đến edge của sprite
+
+    float bulletStartX;
+    if (m_facingRight) {
+        bulletStartX = m_x + m_width - bulletOffsetFromEdge; // Giảm khoảng cách khi bắn sang phải
+    } else {
+        bulletStartX = m_x + bulletOffsetFromEdge; // Tăng khoảng cách khi bắn sang trái
+    }
+
+    float bulletStartY = m_y + (m_height * 0.35f); // Giữ nguyên độ cao như cũ
+
     bullet->init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
     m_activeBullets++;
     m_currentCooldown = m_shootCooldown;
