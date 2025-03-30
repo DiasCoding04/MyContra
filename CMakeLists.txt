@@ -28,16 +28,8 @@ link_directories(
 # Tạo file thực thi
 add_executable(GameSdl2 src/main.cpp
         src/CommonFunc.h
-        src/Game.cpp
-        src/Game.h
         src/Player.cpp
         src/Player.h
-        src/Enemy.cpp
-        src/Enemy.h
-        src/Platform.cpp
-        src/Platform.h
-        src/Render.cpp
-        src/Render.h
         src/Camera.cpp
         src/Camera.h
         src/InputManager.cpp

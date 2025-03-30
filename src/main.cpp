@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
     Camera camera(SCREEN_WIDTH, SCREEN_HEIGHT);
     camera.init(map);
 
-    if (!background.loadBackground(renderer, "assets/background.png")) {
+    if (!background.loadBackground(renderer, "assets/background2.jpg")) {
         std::cerr << "Failed to load background!" << std::endl;
         return 1;
     }

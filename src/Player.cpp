@@ -163,7 +163,17 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
         m_facingRight = true;   // Cập nhật hướng nhìn sang phải
     }
 
-    updateBullets(deltaTime);
+    // Cập nhật cooldown bắn
+    if (m_currentCooldown > 0) {
+        m_currentCooldown -= deltaTime;
+    }
+
+    // Xử lý bắn
+    if (InputManager::shoot && m_currentCooldown <= 0) {
+        if (SDL_GetRenderer(SDL_GetWindowFromID(1))) {  // Kiểm tra renderer hợp lệ
+            shoot(SDL_GetRenderer(SDL_GetWindowFromID(1)));
+        }
+    }
 
     // Xử lý nhảy
     if (InputManager::moveUp) {
@@ -179,6 +189,7 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
     const float MIN_FALL_SPEED = 20.0f;
     const float MAX_FALL_SPEED = 500.0f;
 
+    // Xử lý trọng lực và rơi
     if (!onGround) {
         m_velocityY += m_gravity * deltaTime;
         m_velocityY = std::min(m_velocityY, MAX_FALL_SPEED);
@@ -209,9 +220,8 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
     bool collidingHorizontally = isCollidingHorizontally(newX, m_y, map);
     bool collidingVertically = isCollidingVertically(m_x, newY, map);
 
+    // Xử lý di chuyển ngang
     if (vx != 0) {
-        bool collidingHorizontally = isCollidingHorizontally(newX, m_y, map);
-
         if (!collidingHorizontally) {
             m_x = newX;
         } else {
@@ -225,6 +235,7 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
         }
     }
 
+    // Xử lý di chuyển dọc
     if (!collidingVertically) {
         m_y = newY;
     } else {
@@ -237,6 +248,9 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
             m_isJumping = false;
         }
     }
+
+    // Cập nhật đạn
+    updateBullets(deltaTime);
 }
 
 void Player::render(SDL_Renderer* renderer, const Camera& camera)
