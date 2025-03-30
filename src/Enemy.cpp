@@ -34,35 +34,15 @@ void Enemy::init(SDL_Renderer* renderer, float startX, float startY,
     m_hitPoints = 10 + enemyIndex;         // Tăng máu
 }
 
-void Enemy::calculatePathToPlayer(const Player* player, const Map& map) {
-    // Tính khoảng cách đến player
-    float dx = player->getX() - m_x;
-    float dy = player->getY() - m_y;
-
-    // Xác định hướng di chuyển
-    m_facingRight = dx > 0;
-
-    // Kiểm tra xem có vật cản phía trước không
-    float checkX = m_facingRight ? m_x + m_width + 10 : m_x - 10;
-    int tileX = static_cast<int>(checkX / map.tileWidth);
-    int tileY = static_cast<int>((m_y + m_height/2) / map.tileHeight);
-
-    // Nếu có vật cản phía trước và đang ở trên mặt đất
-    if (tileY < map.height && tileX >= 0 && tileX < map.width) {
-        if (map.tileData[tileY * map.width + tileX] != 0 && isOnGround(map)) {
-            m_shouldJump = true;
-        }
-    }
-}
-
 void Enemy::update(float deltaTime, const Map& map, Player* player) {
     // Cập nhật cooldown nhảy
     if (m_currentJumpCooldown > 0) {
         m_currentJumpCooldown -= deltaTime;
     }
 
-    calculatePathToPlayer(player, map);
-
+    // Tính khoảng cách đến player và di chuyển về phía player
+    float dx = player->getX() - m_x;
+    m_facingRight = dx > 0;
     float vx = m_facingRight ? 1.0f : -1.0f;
     bool onGround = isOnGround(map);
 
