@@ -99,6 +99,7 @@ int main(int argc, char* argv[]) {
 
         if (InputManager::shoot) {
             player.shoot(renderer);
+            InputManager::shoot = false;  // Reset sau khi đã bắn
         }
 
         camera.update(player.getX(), player.getY(), deltaTime);

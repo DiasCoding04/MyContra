@@ -56,12 +56,15 @@ void Player::shoot(SDL_Renderer* renderer)
 {
     if (m_currentCooldown > 0) return;
 
-    // Tạo một viên đạn mới mỗi khi bắn
-    m_bullets.emplace_back();  // Thêm viên đạn mới vào vector
+    // Kiểm tra giới hạn đạn
+    if (m_bullets.size() >= MAX_BULLETS) {
+        return; // Không bắn thêm nếu đã đạt giới hạn
+    }
+
+    // Tạo đạn mới
+    m_bullets.emplace_back();
     float bulletStartX = m_facingRight ? m_x + m_width : m_x;
     float bulletStartY = m_y + m_height / 2;
-
-    // Khởi tạo viên đạn mới vừa thêm vào
     m_bullets.back().init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
     m_currentCooldown = m_shootCooldown;
 }
