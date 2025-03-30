@@ -5,7 +5,7 @@
 #include "json.hpp"
 #include "Camera.h"
 #include "Background.h"
-#include "Enemy.h" // Thêm Enemy
+
 
 int main(int argc, char* argv[]) {
     // 1) Khởi tạo SDL
@@ -64,13 +64,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Thêm kẻ địch
-    std::vector<Enemy> enemies;
-    for (int i = 0; i < 5; ++i) {
-        Enemy enemy;
-        enemy.init(renderer, player.getX() + 50 * (i + 1), player.getY(), "assets/enemy.png", i);
-        enemies.push_back(enemy);
-    }
+
 
     while (running) {
 
@@ -106,10 +100,7 @@ int main(int argc, char* argv[]) {
 
         camera.update(player.getX(), player.getY(), deltaTime);
 
-        // Cập nhật kẻ địch
-        for (auto& enemy : enemies) {
-            enemy.update(deltaTime, map, &player);
-        }
+
 
         SDL_SetRenderDrawColor(renderer, 0x1E, 0x90, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
@@ -122,10 +113,7 @@ int main(int argc, char* argv[]) {
         // Render player
         player.render(renderer, camera);
 
-        // Render kẻ địch
-        for (auto& enemy : enemies) {  // Thay đổi từ const auto& thành auto&
-            enemy.render(renderer, camera);
-        }
+
 
         SDL_RenderPresent(renderer);
     }

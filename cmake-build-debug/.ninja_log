@@ -1,10 +1,11 @@
 # ninja log v6
-12	56	7650408657711758	CMakeFiles/GameSdl2.dir/src/Enemy.cpp.obj	6c07f76450ee5cfe
+10	1119	7650500717292358	CMakeFiles/GameSdl2.dir/src/Enemy.cpp.obj	6c07f76450ee5cfe
 6	1100	7650453310014211	CMakeFiles/GameSdl2.dir/src/Player.cpp.obj	e43ac0d4fa908b6d
+6	47	7650466885882245	CMakeFiles/GameSdl2.dir/src/WaveManager.cpp.obj	8ca3bced1ae0d201
 6	542	7650421667747455	CMakeFiles/GameSdl2.dir/src/InputManager.cpp.obj	7bf2f9e7df288b68
-1101	1886	7650453320962851	GameSdl2.exe	6bf1ca5a977fa747
-3	213	7650465641181286	build.ninja	39577e2c7ac6fcab
-4	2949	7650447155007053	CMakeFiles/GameSdl2.dir/src/main.cpp.obj	1293fcb2a4c848ed
+3299	4073	7650500750186091	GameSdl2.exe	8145d5806e35d49d
+3	213	7650501189826635	build.ninja	39577e2c7ac6fcab
+6	3299	7650500717252259	CMakeFiles/GameSdl2.dir/src/main.cpp.obj	1293fcb2a4c848ed
 130	2394	7645137575784840	CMakeFiles/GameSdl2.dir/src/TextureManager.cpp.obj	65cf628c89a67ff1
 8	52	7650408947225445	CMakeFiles/GameSdl2.dir/src/Game.cpp.obj	919068b762b4c958
 61	283	7645137575085598	CMakeFiles/GameSdl2.dir/src/Platform.cpp.obj	9b0b0dacb648d634
@@ -16,14 +17,5 @@
 157	1187	7645137576045522	CMakeFiles/GameSdl2.dir/libs/tinyxml2/tinyxml2.cpp.obj	b91553e8eaefd8ad
 194	1666	7645137576416498	CMakeFiles/GameSdl2.dir/src/Background.cpp.obj	b5d064cacb04e9fb
 18	921	7650444403483704	CMakeFiles/GameSdl2.dir/src/bullet.cpp.obj	de6c125e952af9db
-6	56	7650466768294978	CMakeFiles/GameSdl2.dir/src/Enemy.cpp.obj	6c07f76450ee5cfe
-6	47	7650466885882245	CMakeFiles/GameSdl2.dir/src/WaveManager.cpp.obj	8ca3bced1ae0d201
-48	845	7650466886303342	GameSdl2.exe	8145d5806e35d49d
-5	1110	7650481893510793	CMakeFiles/GameSdl2.dir/src/Enemy.cpp.obj	6c07f76450ee5cfe
-1110	1918	7650481904555669	GameSdl2.exe	8145d5806e35d49d
-6	2762	7650485505676053	CMakeFiles/GameSdl2.dir/src/main.cpp.obj	1293fcb2a4c848ed
-2763	3566	7650485533239064	GameSdl2.exe	8145d5806e35d49d
-5	3048	7650493088263875	CMakeFiles/GameSdl2.dir/src/main.cpp.obj	1293fcb2a4c848ed
-3048	3853	7650493118695520	GameSdl2.exe	8145d5806e35d49d
-6	1147	7650494473163433	CMakeFiles/GameSdl2.dir/src/Enemy.cpp.obj	6c07f76450ee5cfe
-1147	1935	7650494484571889	GameSdl2.exe	8145d5806e35d49d
+5	2976	7650501643674417	CMakeFiles/GameSdl2.dir/src/main.cpp.obj	1293fcb2a4c848ed
+2976	3778	7650501673379469	GameSdl2.exe	6bf1ca5a977fa747

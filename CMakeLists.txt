@@ -38,7 +38,6 @@ add_executable(GameSdl2 src/main.cpp
         src/SoundManager.h
         src/ResourceManager.cpp
         src/ResourceManager.h
-        src/Utils.h
         src/TextureManager.h
         src/TextureManager.cpp
         src/Map.h
@@ -49,10 +48,7 @@ add_executable(GameSdl2 src/main.cpp
         src/Background.cpp
         src/bullet.h
         src/bullet.cpp
-        src/Enemy.h
-        src/Enemy.cpp
-        src/WaveManager.h
-        src/WaveManager.cpp # Thêm TinyXML2
+        # Thêm TinyXML2
 )
 
 # Liên kết thư viện
