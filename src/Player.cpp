@@ -134,7 +134,6 @@ bool Player::isCollidingVertically(float checkX, float newY, const Map& map) {
     }
     return false;
 }
-
 void Player::update(float deltaTime, int screenWidth, int screenHeight, const Map& map) {
     float vx = 0.f;
 
@@ -156,23 +155,11 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
     // Xử lý input ngang và cập nhật hướng nhìn
     if (InputManager::moveLeft && !m_touchingLeft) {
         vx = -1.f;
-        m_facingRight = false;  // Cập nhật hướng nhìn sang trái
+        m_facingRight = false;
     }
     if (InputManager::moveRight && !m_touchingRight) {
         vx = 1.f;
-        m_facingRight = true;   // Cập nhật hướng nhìn sang phải
-    }
-
-    // Cập nhật cooldown bắn
-    if (m_currentCooldown > 0) {
-        m_currentCooldown -= deltaTime;
-    }
-
-    // Xử lý bắn
-    if (InputManager::shoot && m_currentCooldown <= 0) {
-        if (SDL_GetRenderer(SDL_GetWindowFromID(1))) {  // Kiểm tra renderer hợp lệ
-            shoot(SDL_GetRenderer(SDL_GetWindowFromID(1)));
-        }
+        m_facingRight = true;
     }
 
     // Xử lý nhảy
@@ -184,6 +171,11 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
         }
     } else {
         m_jumpKeyReleased = true;
+    }
+
+    // Cập nhật cooldown
+    if (m_currentCooldown > 0) {
+        m_currentCooldown -= deltaTime;
     }
 
     const float MIN_FALL_SPEED = 20.0f;
@@ -205,16 +197,6 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
     // Tính toán vị trí mới
     float newX = m_x + vx * m_speed * deltaTime;
     float newY = m_y + m_velocityY * deltaTime;
-
-    // Coyote time
-    static float coyoteTimer = 0.0f;
-    const float COYOTE_TIME = 0.1f;
-
-    if (wasOnGround && !onGround) {
-        coyoteTimer = COYOTE_TIME;
-    } else if (!onGround) {
-        coyoteTimer = std::max(0.0f, coyoteTimer - deltaTime);
-    }
 
     // Xử lý va chạm
     bool collidingHorizontally = isCollidingHorizontally(newX, m_y, map);
