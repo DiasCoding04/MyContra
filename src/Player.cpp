@@ -1,4 +1,7 @@
 #include "Player.h"
+
+#include <algorithm>
+
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "Map.h"
@@ -10,10 +13,12 @@ Player::Player()
       m_texture(nullptr), m_width(32), m_height(32),
       m_isJumping(false), m_velocityY(0.f), m_gravity(500.f),
       m_touchingLeft(false), m_touchingRight(false),
-      m_jumpKeyReleased(true), m_facingRight(true),
-      m_shootCooldown(0.2f), m_currentCooldown(0.0f)
+      m_jumpKeyReleased(true),
+      m_facingRight(true),
+      m_shootCooldown(0.5f),
+      m_currentCooldown(0.0f)
 {
-    m_bullets.reserve(MAX_BULLETS);
+    // Xóa m_bullets.reserve(MAX_BULLETS) nếu có
 }
 
 
@@ -44,42 +49,35 @@ void Player::init(SDL_Renderer* renderer, float startX, float startY,
     m_jumpKeyReleased = true;
     m_facingRight = true;
 
-    for (int i = 0; i < MAX_BULLETS; ++i) {
-        m_bullets.emplace_back();
-    }
+
 }
 
 void Player::shoot(SDL_Renderer* renderer)
 {
     if (m_currentCooldown > 0) return;
 
-    for (auto& bullet : m_bullets) {
-        if (!bullet.isActive()) {
-            float bulletStartX = m_facingRight ? m_x + m_width : m_x;
-            float bulletStartY = m_y + m_height / 2;
+    // Tạo một viên đạn mới mỗi khi bắn
+    m_bullets.emplace_back();  // Thêm viên đạn mới vào vector
+    float bulletStartX = m_facingRight ? m_x + m_width : m_x;
+    float bulletStartY = m_y + m_height / 2;
 
-            bullet.init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
-            m_currentCooldown = m_shootCooldown;
-            break;
-        }
-    }
+    // Khởi tạo viên đạn mới vừa thêm vào
+    m_bullets.back().init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
+    m_currentCooldown = m_shootCooldown;
 }
 
 void Player::updateBullets(float deltaTime)
 {
-    if (m_currentCooldown > 0) {
-        m_currentCooldown -= deltaTime;
-    }
+    // Xóa những viên đạn đã bay ra khỏi màn hình
+    m_bullets.erase(
+        std::remove_if(m_bullets.begin(), m_bullets.end(),
+            [](const Bullet& bullet) { return !bullet.isActive(); }),
+        m_bullets.end()
+    );
 
+    // Cập nhật vị trí các viên đạn
     for (auto& bullet : m_bullets) {
-        if (bullet.isActive()) {
-            bullet.update(deltaTime);
-
-            // Deactivate bullets that go too far
-            if (std::abs(bullet.getX() - m_x) > 1000) {
-                bullet.deactivate();
-            }
-        }
+        bullet.update(deltaTime);
     }
 }
 

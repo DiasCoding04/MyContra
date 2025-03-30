@@ -96,6 +96,11 @@ int main(int argc, char* argv[]) {
         }
 
         player.update(deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT, map);
+
+        if (InputManager::shoot) {
+            player.shoot(renderer);
+        }
+
         camera.update(player.getX(), player.getY(), deltaTime);
 
 

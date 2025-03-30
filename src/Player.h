@@ -49,5 +49,5 @@ private:
     float m_shootCooldown;
     float m_currentCooldown;
     bool m_facingRight;
-    static const int MAX_BULLETS = 20;
+    
 };
