@@ -15,19 +15,25 @@ Player::Player()
       m_touchingLeft(false), m_touchingRight(false),
       m_jumpKeyReleased(true),
       m_facingRight(true),
-      m_shootCooldown(0.5f),
-      m_currentCooldown(0.0f)
+      m_shootCooldown(0.2f),
+      m_currentCooldown(0.0f),
+      m_activeBullets(0)
 {
-    // Xóa m_bullets.reserve(MAX_BULLETS) nếu có
+    // Khởi tạo pool đạn
+    m_bullets.resize(MAX_BULLETS);
 }
-
 
 Player::~Player()
 {
+    // Cleanup texture
     if (m_texture) {
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
     }
+
+    // Clear bullet pool
+    m_bullets.clear();
+    m_activeBullets = 0;
 }
 
 void Player::init(SDL_Renderer* renderer, float startX, float startY,
@@ -56,31 +62,38 @@ void Player::shoot(SDL_Renderer* renderer)
 {
     if (m_currentCooldown > 0) return;
 
-    // Kiểm tra giới hạn đạn
-    if (m_bullets.size() >= MAX_BULLETS) {
-        return; // Không bắn thêm nếu đã đạt giới hạn
+    // Tìm viên đạn không active trong pool
+    Bullet* bullet = nullptr;
+    for (auto& b : m_bullets) {
+        if (!b.m_active) {
+            bullet = &b;
+            break;
+        }
     }
 
-    // Tạo đạn mới
-    m_bullets.emplace_back();
+    if (!bullet) return; // Không còn đạn không active trong pool
+
+    // Khởi tạo đạn
     float bulletStartX = m_facingRight ? m_x + m_width : m_x;
     float bulletStartY = m_y + m_height / 2;
-    m_bullets.back().init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
+    bullet->init(renderer, bulletStartX, bulletStartY, m_facingRight, "assets/bullet.png");
+    m_activeBullets++;
     m_currentCooldown = m_shootCooldown;
 }
 
-void Player::updateBullets(float deltaTime)
+void Player::updateBullets(float deltaTime, const Camera& camera)
 {
-    // Xóa những viên đạn đã bay ra khỏi màn hình
-    m_bullets.erase(
-        std::remove_if(m_bullets.begin(), m_bullets.end(),
-            [](const Bullet& bullet) { return !bullet.isActive(); }),
-        m_bullets.end()
-    );
-
-    // Cập nhật vị trí các viên đạn
     for (auto& bullet : m_bullets) {
+        if (!bullet.m_active) continue;
+
+        // Cập nhật vị trí đạn
         bullet.update(deltaTime);
+
+        // Kiểm tra đạn ra khỏi màn hình
+        if (bullet.isOutOfBounds(SCREEN_WIDTH, SCREEN_HEIGHT, camera)) {
+            bullet.setActive(false);
+            m_activeBullets--;
+        }
     }
 }
 
@@ -137,7 +150,8 @@ bool Player::isCollidingVertically(float checkX, float newY, const Map& map) {
     }
     return false;
 }
-void Player::update(float deltaTime, int screenWidth, int screenHeight, const Map& map) {
+void Player::update(float deltaTime, int screenWidth, int screenHeight,
+                    const Map& map, const Camera& camera) {
     float vx = 0.f;
 
     static bool wasOnGround = false;
@@ -235,7 +249,7 @@ void Player::update(float deltaTime, int screenWidth, int screenHeight, const Ma
     }
 
     // Cập nhật đạn
-    updateBullets(deltaTime);
+    updateBullets(deltaTime, camera);
 }
 
 void Player::render(SDL_Renderer* renderer, const Camera& camera)
@@ -260,6 +274,8 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera)
 void Player::renderBullets(SDL_Renderer* renderer, const Camera& camera)
 {
     for (auto& bullet : m_bullets) {
-        bullet.render(renderer, camera);
+        if (bullet.m_active) {
+            bullet.render(renderer, camera);
+        }
     }
 }

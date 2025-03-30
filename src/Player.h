@@ -13,7 +13,8 @@ public:
 
     void init(SDL_Renderer* renderer, float startX, float startY,
               const char* texturePath);
-    void update(float deltaTime, int screenWidth, int screenHeight, const Map& map);
+    void update(float deltaTime, int screenWidth, int screenHeight,
+                const Map& map, const Camera& camera);
     void render(SDL_Renderer* renderer, const Camera& camera);
 
     // Getters cho vị trí
@@ -22,8 +23,9 @@ public:
 
     // Hệ thống bắn
     void shoot(SDL_Renderer* renderer);
-    void updateBullets(float deltaTime);  // Thêm hàm này
+    void updateBullets(float deltaTime, const Camera& camera);
     void renderBullets(SDL_Renderer* renderer, const Camera& camera);
+    size_t getActiveBullets() const { return m_activeBullets; }
 
 private:
     bool isOnGround(const Map& map);
@@ -45,9 +47,13 @@ private:
     float m_gravity;
 
     // Biến bắn đạn
-    std::vector<Bullet> m_bullets;
+
     float m_shootCooldown;
     float m_currentCooldown;
     bool m_facingRight;
-    static const size_t MAX_BULLETS = 30;
+
+
+    static const size_t MAX_BULLETS = 30; // Số lượng đạn tối đa trong pool
+    std::vector<Bullet> m_bullets;        // Pool các viên đạn
+    size_t m_activeBullets;              // Số lượng đạn đang active
 };

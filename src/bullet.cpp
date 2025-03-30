@@ -2,7 +2,7 @@
 #include "ResourceManager.h"
 
 Bullet::Bullet()
-    : m_x(0), m_y(0), m_speed(200.0f),
+    : m_x(0), m_y(0), m_speed(400.0f), // Tăng tốc độ đạn lên 400
       m_active(false), m_movingRight(true),
       m_texture(nullptr), m_width(10), m_height(3)
 {

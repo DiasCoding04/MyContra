@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
             running = false;
         }
 
-        player.update(deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT, map);
+        player.update(deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT, map, camera);
 
         if (InputManager::shoot) {
             player.shoot(renderer);

@@ -19,10 +19,18 @@ public:
     int getWidth() const { return m_width; }
     int getHeight() const { return m_height; }
 
+    bool isOutOfBounds(int screenWidth, int screenHeight, const Camera& camera) const {
+        SDL_Point screenPos = camera.worldToScreen(m_x, m_y);
+        return (screenPos.x < -m_width || screenPos.x > screenWidth ||
+                screenPos.y < -m_height || screenPos.y > screenHeight);
+    }
+
+    void setActive(bool active) { m_active = active; }
+    bool m_active; // Chuyển từ private sang public để dễ quản lý
+
 private:
     float m_x, m_y;
     float m_speed;
-    bool m_active;
     bool m_movingRight;
     SDL_Texture* m_texture;
     int m_width, m_height;
