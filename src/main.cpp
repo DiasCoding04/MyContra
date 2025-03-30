@@ -131,7 +131,6 @@ int main(int argc, char* argv[]) {
 }
 */
 
-
 #include "CommonFunc.h"
 #include "Player.h"
 #include "InputManager.h"
@@ -139,6 +138,9 @@ int main(int argc, char* argv[]) {
 #include "json.hpp"
 #include "Camera.h"
 #include "Background.h"
+
+// Constants cho dung nham
+  // Tốc độ dung nham (pixel/giây)
 
 int main(int argc, char* argv[]) {
     // 1) Khởi tạo SDL
@@ -153,9 +155,9 @@ int main(int argc, char* argv[]) {
 
     // 2) Tạo window, renderer
     SDL_Window* window = SDL_CreateWindow("Smooth Player Movement",
-                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                          SCREEN_WIDTH, SCREEN_HEIGHT,
-                                          SDL_WINDOW_SHOWN);
+                                        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                        SCREEN_WIDTH, SCREEN_HEIGHT,
+                                        SDL_WINDOW_SHOWN);
     if (!window) {
         std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
         return 1;
@@ -185,12 +187,17 @@ int main(int argc, char* argv[]) {
                 "assets/myplayer.png");
 
     bool running = true;
+    bool gameOver = false;
     Uint32 lastTime = SDL_GetTicks();
 
+    // Khởi tạo camera
     Camera camera(SCREEN_WIDTH, SCREEN_HEIGHT);
     camera.init(map);
 
-    if (!background.loadBackground(renderer, "assets/background2.jpg")) {
+    // Khởi tạo vị trí dung nham
+    float lavaY = map.height * map.tileHeight;
+
+    if (!background.loadBackground(renderer, "assets/background.png")) {
         std::cerr << "Failed to load background!" << std::endl;
         return 1;
     }
@@ -218,18 +225,33 @@ int main(int argc, char* argv[]) {
             running = false;
         }
 
-        player.update(deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT, map, camera);
+        if (!gameOver) {
+            // Update player
+            player.update(deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT, map, camera);
+            const float LAVA_RISE_SPEED = 25.0f;
+            // Update dung nham
+            lavaY -= LAVA_RISE_SPEED * deltaTime;
 
-        if (InputManager::shoot) {
-            player.shoot(renderer);
-            InputManager::shoot = false;  // Reset sau khi đã bắn
+            // Kiểm tra va chạm với dung nham
+            if (player.getY() > lavaY) {
+                gameOver = true;
+            }
+
+            // Update đạn
+            if (InputManager::shoot) {
+                player.shoot(renderer);
+                InputManager::shoot = false;  // Reset sau khi đã bắn
+            }
+
+            // Update camera
+            camera.update(player.getX(), player.getY(), deltaTime);
         }
 
-        camera.update(player.getX(), player.getY(), deltaTime);
-
+        // Render
         SDL_SetRenderDrawColor(renderer, 0x1E, 0x90, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
 
+        // Render background với parallax
         background.render(renderer, camera.getX() * 0.20f);
 
         // Render map
@@ -237,6 +259,17 @@ int main(int argc, char* argv[]) {
 
         // Render player
         player.render(renderer, camera);
+
+        // Render dung nham
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0x45, 0x00, 0xFF);  // Màu cam đỏ
+        SDL_Point lavaScreenPos = camera.worldToScreen(0, lavaY);
+        SDL_Rect lavaRect = {
+            0,                  // x
+            lavaScreenPos.y,    // y
+            SCREEN_WIDTH,       // width
+            SCREEN_HEIGHT * 2   // height (đủ lớn để lấp đầy phần dưới)
+        };
+        SDL_RenderFillRect(renderer, &lavaRect);
 
         SDL_RenderPresent(renderer);
     }
