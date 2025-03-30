@@ -1,0 +1,3 @@
+C:/Users/dias/Documents/GameSdl2/GameSdl2/cmake-build-debug/CMakeFiles/GameSdl2.dir
+C:/Users/dias/Documents/GameSdl2/GameSdl2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/dias/Documents/GameSdl2/GameSdl2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
