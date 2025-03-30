@@ -10,6 +10,7 @@ public:
     static bool moveDown;
     static bool moveLeft;
     static bool moveRight;
+    static bool shoot;
 
     // Hàm xử lý event, set các biến bool tương ứng
     static void HandleEvents();
